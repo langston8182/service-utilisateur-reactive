@@ -1,0 +1,16 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: maven
+    tag: 3.6.1-jdk-11
+
+inputs:
+  - name: resource-utilisateur-git
+
+outputs:
+  - name: output
+
+run:
+  path: resource-utilisateur-git/ci/tasks/maven-build.sh

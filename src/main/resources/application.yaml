@@ -1,0 +1,11 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: utilisateur
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-847930.okta.com/oauth2/default
+          jwk-set-uri: https://dev-847930.okta.com/oauth2/default/v1/keys

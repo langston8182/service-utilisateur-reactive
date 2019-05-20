@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  service-utilisateur:
+    image: langston8182/service-utilisateur:1.0.0-SNAPSHOT
+    container_name: service-utilisateur
+    ports:
+    - 8100:8100

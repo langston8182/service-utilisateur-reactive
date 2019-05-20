@@ -1,0 +1,36 @@
+resources:
+  - name: resource-utilisateur-git
+    type: git
+    source:
+      uri: https://github.com/langston8182/service-utilisateur.git
+      branch: master
+
+  - name: docker-image
+    type: docker-image
+    source:
+      repository: langston8182/service-utilisateur
+      tag: 1.0.0-SNAPSHOT
+      username: {{dockerhub-username}}
+      password: {{dockerhub-password}}
+
+jobs:
+  - name: service-utilisateur-build
+    public: true
+    serial: true
+    serial_groups: [build]
+    plan:
+      - get: resource-utilisateur-git
+        trigger: true
+      - task: build
+        file: resource-utilisateur-git/ci/tasks/task-build.yml
+
+  - name: service-utilisateur-deploy
+    serial: true
+    serial_groups: [build]
+    plan:
+      - get: resource-utilisateur-git
+        trigger: true
+        passed: [service-utilisateur-build]
+      - put: docker-image
+        params:
+          build: resource-utilisateur-git
