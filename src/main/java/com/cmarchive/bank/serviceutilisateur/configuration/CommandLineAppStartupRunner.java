@@ -16,6 +16,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         UtilisateurDto utilisateurDto = new UtilisateurDto()
+                .setIdOkta("00ukz1wxxtbR97LJA356")
                 .setId("1")
                 .setNom("Marchive")
                 .setPrenom("Cyril")
