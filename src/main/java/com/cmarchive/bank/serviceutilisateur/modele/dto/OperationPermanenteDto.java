@@ -1,7 +1,16 @@
 package com.cmarchive.bank.serviceutilisateur.modele.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import java.math.BigDecimal;
 
+@Data
+@Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class OperationPermanenteDto {
 
     private String id;
@@ -9,49 +18,4 @@ public class OperationPermanenteDto {
     private Integer jour;
     private BigDecimal prix;
     private UtilisateurDto utilisateurDto;
-
-    public String getId() {
-        return id;
-    }
-
-    public OperationPermanenteDto setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getIntitule() {
-        return intitule;
-    }
-
-    public OperationPermanenteDto setIntitule(String intitule) {
-        this.intitule = intitule;
-        return this;
-    }
-
-    public Integer getJour() {
-        return jour;
-    }
-
-    public OperationPermanenteDto setJour(Integer jour) {
-        this.jour = jour;
-        return this;
-    }
-
-    public BigDecimal getPrix() {
-        return prix;
-    }
-
-    public OperationPermanenteDto setPrix(BigDecimal prix) {
-        this.prix = prix;
-        return this;
-    }
-
-    public UtilisateurDto getUtilisateurDto() {
-        return utilisateurDto;
-    }
-
-    public OperationPermanenteDto setUtilisateurDto(UtilisateurDto utilisateurDto) {
-        this.utilisateurDto = utilisateurDto;
-        return this;
-    }
 }
