@@ -36,6 +36,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public Mono<UtilisateurDto> recupererUtilisateurParIdOkta(String idOkta) {
+        return utilisateurRepository.findByIdOkta(idOkta)
+                .switchIfEmpty(Mono.error(new UtilisateurNonTrouveException("L'utilisateur n'a pas ete trouve")))
+                .map(utilisateur -> utilisateurMapper.mapVersUtilisateurDto(utilisateur));
+    }
+
+    @Override
     public Mono<UtilisateurDto> creerUtilisateur(UtilisateurDto utilisateurDto) {
         Utilisateur utilisateur = utilisateurMapper.mapVersUtilisateur(utilisateurDto);
 

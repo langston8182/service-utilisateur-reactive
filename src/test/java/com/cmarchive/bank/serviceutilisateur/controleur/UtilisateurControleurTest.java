@@ -75,6 +75,29 @@ public class UtilisateurControleurTest {
     }
 
     @Test
+    public void recupererUtilisateurParIdOkta() {
+        UtilisateurDto utilisateur = creerUtilisateurDto();
+        given(utilisateurService.recupererUtilisateurParIdOkta("1")).willReturn(Mono.just(utilisateur));
+
+        webTestClient.get().uri("/utilisateurs/okta/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.nom").isEqualTo("Marchive")
+                .jsonPath("$.prenom").isEqualTo("Cyril")
+                .jsonPath("$.email").isEqualTo("cyril.marchive@gmail.com");
+    }
+
+    @Test
+    public void recupererUtilisateurParIdOkta_UtilisateurNonTrouve() {
+        given(utilisateurService.recupererUtilisateurParIdOkta("1")).willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+
+        webTestClient.get().uri("/utilisateurs/okta/1")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     public void supprimerUtilisateur() {
         given(utilisateurService.supprimerUtilisateur("1")).willReturn(Mono.empty());
 
@@ -164,6 +187,7 @@ public class UtilisateurControleurTest {
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
+                .setIdOkta("1")
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");

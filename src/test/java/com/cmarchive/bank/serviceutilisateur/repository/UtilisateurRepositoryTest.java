@@ -109,6 +109,20 @@ public class UtilisateurRepositoryTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    public void recupererUtilisateur_ParIdOkta() {
+        Utilisateur cyril = creerUtilisateur();
+        mongoTemplate.save(cyril);
+
+        Mono<Utilisateur> resultat = utilisateurRepository.findByIdOkta(cyril.getIdOkta());
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectNextMatches(utilisateur -> utilisateur.getEmail().equals("cyril.marchive@gmail.com"))
+                .verifyComplete();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void supprimerUtilisateur() {
         Utilisateur cyril = creerUtilisateur();
         mongoTemplate.save(cyril);
@@ -122,6 +136,7 @@ public class UtilisateurRepositoryTest {
 
     private Utilisateur creerUtilisateur() {
         return new Utilisateur()
+                .setIdOkta("1")
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");
