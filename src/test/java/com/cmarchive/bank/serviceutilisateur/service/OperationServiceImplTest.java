@@ -3,7 +3,6 @@ package com.cmarchive.bank.serviceutilisateur.service;
 import com.cmarchive.bank.serviceutilisateur.exception.OperationNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.OperationMapper;
-import com.cmarchive.bank.serviceutilisateur.mapper.OperationsMapper;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.Operation;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
