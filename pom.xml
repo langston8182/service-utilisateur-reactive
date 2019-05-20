@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cmarchive.bank</groupId>
 	<artifactId>service-utilisateur-reactive</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>service-utilisateur-reactive</name>
 	<description>Demo project for Spring Boot</description>
 
