@@ -66,6 +66,7 @@ public class OperationMapperTest {
 
     private Utilisateur creerUtilisateur() {
         return new Utilisateur()
+                .setIdOkta("1")
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");
@@ -81,6 +82,7 @@ public class OperationMapperTest {
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
+                .setIdOkta("1")
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");

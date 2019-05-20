@@ -11,6 +11,7 @@ public interface UtilisateurService {
 
     Flux<UtilisateurDto> listerUtilisateurs();
     Mono<UtilisateurDto> recupererUtilisateur(String id);
+    Mono<UtilisateurDto> recupererUtilisateurParIdOkta(String idOkta);
     Mono<UtilisateurDto> creerUtilisateur(UtilisateurDto utilisateurDto);
     Mono<UtilisateurDto> modifierUtilisateur(UtilisateurDto utilisateurDto);
     Mono<Void> supprimerUtilisateur(String id);
