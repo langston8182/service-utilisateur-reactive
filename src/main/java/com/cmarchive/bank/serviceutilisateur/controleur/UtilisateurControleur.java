@@ -43,7 +43,6 @@ public class UtilisateurControleur {
     }
 
     @GetMapping("/utilisateurs")
-    @PreAuthorize("#oauth2.hasScope('ADMIN')")
     public Mono<UtilisateurDto> recupererUtilisateurParEmail(@RequestParam String email) {
         return utilisateurService.recupererUtilisateurParEmail(email)
                 .onErrorResume(throwable -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, throwable.getMessage(), throwable)));
