@@ -30,11 +30,9 @@ public class UtilisateurMapperTest {
     @Test
     public void mapVersUtilisateur() {
         UtilisateurDto utilisateurDto = new UtilisateurDto()
-                .setIdOkta("1")
                 .setNom("Marchive")
                 .setEmail("cyril.marchive@gmail.com")
-                .setPrenom("Cyril")
-                .setMotDePasse("motDePasse");
+                .setPrenom("Cyril");
 
         Utilisateur resultat = utilisateurMapper.mapVersUtilisateur(utilisateurDto);
 
@@ -44,11 +42,9 @@ public class UtilisateurMapperTest {
     @Test
     public void mapVersUtilisateurDto() {
         Utilisateur utilisateur = new Utilisateur()
-                .setIdOkta("1")
                 .setNom("Marchive")
                 .setEmail("cyril.marchive@gmail.com")
-                .setPrenom("Cyril")
-                .setMotDePasse("motDePasse");
+                .setPrenom("Cyril");
 
         UtilisateurDto resultat = utilisateurMapper.mapVersUtilisateurDto(utilisateur);
 

@@ -32,10 +32,10 @@ public class UtilisateurControleur {
                 .onErrorResume(throwable -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, throwable.getMessage(), throwable)));
     }
 
-    @GetMapping("/utilisateurs/okta/{id}")
+    @GetMapping("/utilisateurs/okta/{email}")
     @PreAuthorize("#oauth2.hasScope('ADMIN')")
-    public Mono<UtilisateurDto> recupererUtilisateurParIdOkta(@PathVariable String id) {
-        return utilisateurService.recupererUtilisateurParIdOkta(id)
+    public Mono<UtilisateurDto> recupererUtilisateurParEmail(@PathVariable String email) {
+        return utilisateurService.recupererUtilisateurParEmail(email)
                 .onErrorResume(throwable -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, throwable.getMessage(), throwable)));
     }
 

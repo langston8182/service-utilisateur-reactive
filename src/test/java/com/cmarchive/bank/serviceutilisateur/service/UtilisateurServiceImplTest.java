@@ -80,15 +80,15 @@ public class UtilisateurServiceImplTest {
     }
 
     @Test
-    public void recupererUtilisateurParIdOkta_nominal() {
+    public void recupererUtilisateurParEmail_nominal() {
         Utilisateur cyril = new Utilisateur();
         UtilisateurDto cyrilDto = new UtilisateurDto();
-        given(utilisateurRepository.findByIdOkta(anyString())).willReturn(Mono.just(cyril));
+        given(utilisateurRepository.findByEmail(anyString())).willReturn(Mono.just(cyril));
         given(utilisateurMapper.mapVersUtilisateurDto(cyril)).willReturn(cyrilDto);
 
-        Mono<UtilisateurDto> resultat = utilisateurService.recupererUtilisateurParIdOkta(anyString());
+        Mono<UtilisateurDto> resultat = utilisateurService.recupererUtilisateurParEmail(anyString());
 
-        then(utilisateurRepository).should().findByIdOkta(anyString());
+        then(utilisateurRepository).should().findByEmail(anyString());
         StepVerifier.create(resultat)
                 .expectSubscription()
                 .expectNext(cyrilDto)
@@ -97,11 +97,11 @@ public class UtilisateurServiceImplTest {
 
     @Test
     public void recupererUtilisateurParIdOktaInexistant() {
-        given(utilisateurRepository.findByIdOkta(anyString())).willReturn(Mono.empty());
+        given(utilisateurRepository.findByEmail(anyString())).willReturn(Mono.empty());
 
-        Mono<UtilisateurDto> resultat = utilisateurService.recupererUtilisateurParIdOkta(anyString());
+        Mono<UtilisateurDto> resultat = utilisateurService.recupererUtilisateurParEmail(anyString());
 
-        then(utilisateurRepository).should().findByIdOkta(anyString());
+        then(utilisateurRepository).should().findByEmail(anyString());
         StepVerifier.create(resultat)
                 .expectSubscription()
                 .expectError(UtilisateurNonTrouveException.class)
@@ -147,19 +147,16 @@ public class UtilisateurServiceImplTest {
     public void modifierUtilisateur() {
         String id = "1";
         Utilisateur cyrilRecuperedeBdd = new Utilisateur()
-                .setId(id)
-                .setMotDePasse("motDePasse");
+                .setId(id);
         UtilisateurDto cyrilDtoRecupereDeBdd = new UtilisateurDto()
-                .setId(id)
-                .setMotDePasse("motDePasse");
+                .setId(id);
         Utilisateur cyril = spy(Utilisateur.class);
         cyril.setId(id);
         UtilisateurDto cyrilDto = new UtilisateurDto()
-                .setId(id)
-                .setMotDePasse("motDePasseModifie");
+                .setId(id);
         given(utilisateurRepository.findById(id)).willReturn(Mono.just(cyrilRecuperedeBdd));
         given(utilisateurMapper.mapVersUtilisateurDto(cyrilRecuperedeBdd)).willReturn(cyrilDtoRecupereDeBdd);
-        given(utilisateurMapper.mapVersUtilisateur(cyrilDto)).willReturn(cyril);
+        given(utilisateurMapper.mapVersUtilisateur(cyrilDtoRecupereDeBdd)).willReturn(cyril);
         given(utilisateurRepository.save(cyril)).willReturn(Mono.just(cyril));
         given(utilisateurMapper.mapVersUtilisateurDto(cyril)).willReturn(cyrilDto);
 
@@ -171,7 +168,6 @@ public class UtilisateurServiceImplTest {
                 .verifyComplete();
         then(utilisateurRepository).should().save(cyril);
         then(utilisateurRepository).should().findById(id);
-        then(cyril).should().setMotDePasse("motDePasse");
     }
 
     @Test

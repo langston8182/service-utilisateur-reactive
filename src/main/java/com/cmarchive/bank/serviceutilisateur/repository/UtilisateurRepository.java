@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface UtilisateurRepository extends ReactiveMongoRepository<Utilisateur, String> {
 
-    Mono<Utilisateur> findByIdOkta(String idOkta);
+    Mono<Utilisateur> findByEmail(String email);
 
 }
