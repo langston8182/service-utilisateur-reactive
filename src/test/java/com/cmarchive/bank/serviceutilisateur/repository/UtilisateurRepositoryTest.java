@@ -109,11 +109,11 @@ public class UtilisateurRepositoryTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    public void recupererUtilisateur_ParIdOkta() {
+    public void recupererUtilisateurParId() {
         Utilisateur cyril = creerUtilisateur();
         mongoTemplate.save(cyril);
 
-        Mono<Utilisateur> resultat = utilisateurRepository.findByIdOkta(cyril.getIdOkta());
+        Mono<Utilisateur> resultat = utilisateurRepository.findById(cyril.getId());
 
         StepVerifier.create(resultat)
                 .expectSubscription()
@@ -136,7 +136,6 @@ public class UtilisateurRepositoryTest {
 
     private Utilisateur creerUtilisateur() {
         return new Utilisateur()
-                .setIdOkta("1")
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");

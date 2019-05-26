@@ -22,12 +22,9 @@ public class Utilisateur {
 
     @Id
     private String id;
-    private String idOkta;
     private String nom;
     private String prenom;
 
     @Indexed(unique = true)
     private String email;
-
-    private String motDePasse;
 }

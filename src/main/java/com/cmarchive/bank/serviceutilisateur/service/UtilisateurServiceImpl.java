@@ -36,8 +36,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public Mono<UtilisateurDto> recupererUtilisateurParIdOkta(String idOkta) {
-        return utilisateurRepository.findByIdOkta(idOkta)
+    public Mono<UtilisateurDto> recupererUtilisateurParEmail(String email) {
+        return utilisateurRepository.findByEmail(email)
                 .switchIfEmpty(Mono.error(new UtilisateurNonTrouveException("L'utilisateur n'a pas ete trouve")))
                 .map(utilisateur -> utilisateurMapper.mapVersUtilisateurDto(utilisateur));
     }
@@ -54,8 +54,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public Mono<UtilisateurDto> modifierUtilisateur(UtilisateurDto utilisateurDto) {
         return recupererUtilisateur(utilisateurDto.getId())
-                .map(uDto -> utilisateurMapper
-                        .mapVersUtilisateur(utilisateurDto).setMotDePasse(uDto.getMotDePasse()))
+                .map(uDto -> utilisateurMapper.mapVersUtilisateur(uDto))
                 .flatMap(utilisateur -> utilisateurRepository.save(utilisateur))
                 .map(utilisateur -> utilisateurMapper.mapVersUtilisateurDto(utilisateur));
     }
