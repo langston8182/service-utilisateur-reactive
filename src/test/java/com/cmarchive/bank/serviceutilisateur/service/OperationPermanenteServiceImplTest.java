@@ -4,8 +4,10 @@ import com.cmarchive.bank.serviceutilisateur.exception.OperationPermanenteNonTro
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.OperationPermanenteMapper;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
+import com.cmarchive.bank.serviceutilisateur.modele.Operation;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
+import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationDto;
 import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
 import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.repository.OperationPermanenteRepository;
@@ -38,6 +40,40 @@ public class OperationPermanenteServiceImplTest {
 
     @Mock
     private UtilisateurMapper utilisateurMapper;
+
+    @Test
+    public void recupererOperationPermanenteParUtilisateur() {
+        UtilisateurDto utilisateurDto = new UtilisateurDto();
+        OperationPermanente operationPermanente = new OperationPermanente();
+        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto();
+        given(utilisateurService.recupererUtilisateur("1")).willReturn(Mono.just(utilisateurDto));
+        given(operationPermanenteRepository.findByUtilisateur_IdAndId("1", "2"))
+                .willReturn(Mono.just(operationPermanente));
+        given(operationPermanenteMapper.mapVersOperationPermanenteDto(operationPermanente)).willReturn(operationPermanenteDto);
+
+        Mono<OperationPermanenteDto> resultat = operationPermanenteService
+                .recupererOperationPermanenteParUtilisateur("1", "2");
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectNext(operationPermanenteDto)
+                .verifyComplete();
+        then(operationPermanenteRepository).should().findByUtilisateur_IdAndId("1", "2");
+    }
+
+    @Test
+    public void recupererOperationPermanenteParUtilisateur_UtilisateurNonExistant() {
+        given(utilisateurService.recupererUtilisateur("1")).willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+        given(operationPermanenteRepository.findByUtilisateur_IdAndId("1", "2")).willReturn(Mono.empty());
+
+        Mono<OperationPermanenteDto> resultat = operationPermanenteService
+                .recupererOperationPermanenteParUtilisateur("1", "2");
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectError(UtilisateurNonTrouveException.class)
+                .verify();
+    }
 
     @Test
     public void listerOperationPermanentesParUtilisateur() {

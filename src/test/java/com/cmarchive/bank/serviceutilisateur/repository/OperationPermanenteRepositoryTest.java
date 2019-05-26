@@ -1,6 +1,7 @@
 package com.cmarchive.bank.serviceutilisateur.repository;
 
 
+import com.cmarchive.bank.serviceutilisateur.modele.Operation;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
 import org.junit.Test;
@@ -74,6 +75,21 @@ public class OperationPermanenteRepositoryTest {
         StepVerifier.create(resultat)
                 .expectSubscription()
                 .expectNextMatches(operationPermanente -> operationPermanente.getJour() == 12)
+                .verifyComplete();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    public void recupererOperationPermanenteParUtilisateur() {
+        Utilisateur cyril = creerUtilisateur();
+        OperationPermanente operationPermanente = creerOperationPermanente(cyril);
+        mongoTemplate.save(cyril);
+        mongoTemplate.insert(operationPermanente);
+        Mono<OperationPermanente> resultat = operationPermanenteRepository.findByUtilisateur_IdAndId(cyril.getId(), operationPermanente.getId());
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectNextMatches(o -> o.getIntitule().equalsIgnoreCase("intitule"))
                 .verifyComplete();
     }
 

@@ -36,31 +36,6 @@ public class OperationPermanenteControleurTest {
     private OperationPermanenteService operationPermanenteService;
 
     @Test
-    public void listerOperationPermanenteUtilisateur() {
-        UtilisateurDto utilisateurDto = creerUtilisateurDto();
-        OperationPermanenteDto operationPermanenteDto1 = creerOperationPermanenteDto(utilisateurDto);
-        OperationPermanenteDto operationPermanenteDto2 = creerOperationPermanenteDto(utilisateurDto);
-        given(operationPermanenteService.listerOperationPermanentesParUtilisateur("1"))
-                .willReturn(Flux.just(operationPermanenteDto1, operationPermanenteDto2));
-
-        webTestClient.get().uri("/operations-permanentes/1")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(OperationPermanenteDto.class)
-                .hasSize(2);
-    }
-
-    @Test
-    public void listerOperationPermanenteUtilisateur_UtilisateurNonExistant() {
-        given(operationPermanenteService.listerOperationPermanentesParUtilisateur("1"))
-                .willReturn(Flux.error(new UtilisateurNonTrouveException("")));
-
-        webTestClient.get().uri("/operations-permanentes/1")
-                .exchange()
-                .expectStatus().isNotFound();
-    }
-
-    @Test
     public void ajouterOperationPermanenteAUtilisateur() {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationPermanenteDto operationPermanenteDto = creerOperationPermanenteDto(utilisateurDto);

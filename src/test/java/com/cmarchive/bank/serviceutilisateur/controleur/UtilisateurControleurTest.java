@@ -2,7 +2,11 @@ package com.cmarchive.bank.serviceutilisateur.controleur;
 
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurDejaPresentException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
+import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationDto;
+import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
 import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
+import com.cmarchive.bank.serviceutilisateur.service.OperationPermanenteService;
+import com.cmarchive.bank.serviceutilisateur.service.OperationService;
 import com.cmarchive.bank.serviceutilisateur.service.UtilisateurService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -32,6 +39,12 @@ public class UtilisateurControleurTest {
     @MockBean
     private UtilisateurService utilisateurService;
 
+    @MockBean
+    private OperationPermanenteService operationPermanenteService;
+
+    @MockBean
+    private OperationService operationService;
+
     @Test
     public void listerUtilisateurs() {
         UtilisateurDto cyril = new UtilisateurDto()
@@ -44,7 +57,7 @@ public class UtilisateurControleurTest {
                 .setPrenom("Melanie");
         given(utilisateurService.listerUtilisateurs()).willReturn(Flux.just(cyril, melanie));
 
-        webTestClient.get().uri("/utilisateurs")
+        webTestClient.get().uri("/utilisateurs/")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UtilisateurDto.class)
@@ -77,9 +90,9 @@ public class UtilisateurControleurTest {
     @Test
     public void recupererUtilisateurParEmail() {
         UtilisateurDto utilisateur = creerUtilisateurDto();
-        given(utilisateurService.recupererUtilisateurParEmail("1")).willReturn(Mono.just(utilisateur));
+        given(utilisateurService.recupererUtilisateurParEmail("cyril.marchive@gmail.com")).willReturn(Mono.just(utilisateur));
 
-        webTestClient.get().uri("/utilisateurs/okta/1")
+        webTestClient.get().uri("/utilisateurs?email=cyril.marchive@gmail.com")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -89,10 +102,10 @@ public class UtilisateurControleurTest {
     }
 
     @Test
-    public void recupererUtilisateurParIdOkta_UtilisateurNonTrouve() {
-        given(utilisateurService.recupererUtilisateurParEmail("1")).willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+    public void recupererUtilisateurParEmail_UtilisateurNonTrouve() {
+        given(utilisateurService.recupererUtilisateurParEmail("cyril.marchive@gmail.com")).willReturn(Mono.error(new UtilisateurNonTrouveException("")));
 
-        webTestClient.get().uri("/utilisateurs/okta/1")
+        webTestClient.get().uri("/utilisateurs?email=cyril.marchive@gmail.com")
                 .exchange()
                 .expectStatus().isNotFound();
     }
@@ -129,7 +142,7 @@ public class UtilisateurControleurTest {
 
         webTestClient
                 .mutateWith(csrf())
-                .post().uri("/utilisateurs")
+                .post().uri("/utilisateurs/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(cyril), UtilisateurDto.class)
                 .exchange()
@@ -146,7 +159,7 @@ public class UtilisateurControleurTest {
 
         webTestClient
                 .mutateWith(csrf())
-                .post().uri("/utilisateurs")
+                .post().uri("/utilisateurs/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(cyril), UtilisateurDto.class)
                 .exchange()
@@ -162,7 +175,7 @@ public class UtilisateurControleurTest {
 
         webTestClient
                 .mutateWith(csrf())
-                .put().uri("/utilisateurs")
+                .put().uri("/utilisateurs/")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(cyril), UtilisateurDto.class)
                 .exchange()
@@ -178,9 +191,100 @@ public class UtilisateurControleurTest {
 
         webTestClient
                 .mutateWith(csrf())
-                .put().uri("/utilisateurs")
+                .put().uri("/utilisateurs/")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(cyril), UtilisateurDto.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void listerOperationPermanenteUtilisateur() {
+        OperationPermanenteDto operationPermanenteDto = creerOperationPermanenteDto();
+        Flux<OperationPermanenteDto> operationPermanenteDtoFlux = Flux.just(operationPermanenteDto);
+        given(operationPermanenteService.listerOperationPermanentesParUtilisateur("1")).willReturn(operationPermanenteDtoFlux);
+
+        webTestClient.get().uri("/utilisateurs/1/operations-permanentes/")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(OperationPermanenteDto.class)
+                .hasSize(1);
+    }
+
+    @Test
+    public void listerOperationPermanenteUtilisateur_UtilisateurNonExistant() {
+        given(operationPermanenteService.listerOperationPermanentesParUtilisateur("1"))
+                .willReturn(Flux.error(new UtilisateurNonTrouveException("")));
+
+        webTestClient.get().uri("/utilisateurs/1/operations-permanentes/")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void recupererOperationPermanenteUtilisateur() {
+        OperationPermanenteDto operationPermanenteDto = creerOperationPermanenteDto();
+        given(operationPermanenteService.recupererOperationPermanenteParUtilisateur("1", "2"))
+                .willReturn(Mono.just(operationPermanenteDto));
+
+        webTestClient.get().uri("/utilisateurs/1/operations-permanentes/2")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.intitule").isEqualTo("Salaire");
+    }
+
+    @Test
+    public void recupererOperationPermanenteUtilisateur_UtilisateurNonExistant() {
+        given(operationPermanenteService.recupererOperationPermanenteParUtilisateur("1", "2"))
+                .willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+
+        webTestClient.get().uri("/utilisateurs/1/operations-permanentes/2")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void listerOperationUtilisateur() {
+        OperationDto operationDto = creerOperationDto();
+        Flux<OperationDto> operationDtoFlux = Flux.just(operationDto);
+        given(operationService.listerOperationsParUtilisateur("1")).willReturn(operationDtoFlux);
+
+        webTestClient.get().uri("/utilisateurs/1/operations/")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(OperationDto.class)
+                .hasSize(1);
+    }
+
+    @Test
+    public void listerOperationUtilisateur_UtilisateurNonExistant() {
+        given(operationService.listerOperationsParUtilisateur("1"))
+                .willReturn(Flux.error(new UtilisateurNonTrouveException("")));
+
+        webTestClient.get().uri("/utilisateurs/1/operations/")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void recupererOperationUtilisateur() {
+        OperationDto operationDto = creerOperationDto();
+        given(operationService.recupererOperationParUtilisateur("1", "2")).willReturn(Mono.just(operationDto));
+
+        webTestClient.get().uri("/utilisateurs/1/operations/2")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.intitule").isEqualTo("Hydro");
+    }
+
+    @Test
+    public void recupererOperationUtilisateur_UtilisateurNonExistant() {
+        given(operationService.recupererOperationParUtilisateur("1", "2"))
+                .willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+
+        webTestClient.get().uri("/utilisateurs/1/operations/2")
                 .exchange()
                 .expectStatus().isNotFound();
     }
@@ -190,5 +294,21 @@ public class UtilisateurControleurTest {
                 .setEmail("cyril.marchive@gmail.com")
                 .setNom("Marchive")
                 .setPrenom("Cyril");
+    }
+
+    private OperationPermanenteDto creerOperationPermanenteDto() {
+        return new OperationPermanenteDto()
+                .setIntitule("Salaire")
+                .setJour(12)
+                .setPrix(BigDecimal.TEN)
+                .setUtilisateurDto(creerUtilisateurDto());
+    }
+
+    private OperationDto creerOperationDto() {
+        return new OperationDto()
+                .setIntitule("Hydro")
+                .setDateOperation(LocalDate.now())
+                .setPrix(BigDecimal.TEN)
+                .setUtilisateurDto(creerUtilisateurDto());
     }
 }

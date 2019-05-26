@@ -19,13 +19,6 @@ public class OperationControleur {
         this.operationService = operationService;
     }
 
-    @GetMapping("/operations/{utilisateurId}")
-    @PreAuthorize("#oauth2.hasScope('USER')")
-    public Flux<OperationDto> listerOperationUtilisateur(@PathVariable String utilisateurId) {
-        return operationService.listerOperationsParUtilisateur(utilisateurId)
-                .onErrorResume(throwable -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, throwable.getMessage(), throwable)));
-    }
-
     @PostMapping("/operations/{utilisateurId}")
     @PreAuthorize("#oauth2.hasScope('USER')")
     @ResponseStatus(HttpStatus.CREATED)

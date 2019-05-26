@@ -19,13 +19,6 @@ public class OperationPermanenteControleur {
         this.operationPermanenteService = operationPermanenteService;
     }
 
-    @GetMapping("/operations-permanentes/{utilisateurId}")
-    @PreAuthorize("#oauth2.hasScope('USER')")
-    public Flux<OperationPermanenteDto> listerOperationPermanenteUtilisateur(@PathVariable String utilisateurId) {
-        return operationPermanenteService.listerOperationPermanentesParUtilisateur(utilisateurId)
-                .onErrorResume(throwable -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, throwable.getMessage(), throwable)));
-    }
-
     @PostMapping("/operations-permanentes/{utilisateurId}")
     @PreAuthorize("#oauth2.hasScope('USER')")
     @ResponseStatus(HttpStatus.CREATED)

@@ -37,6 +37,13 @@ public class OperationPermanenteServiceImpl implements OperationPermanenteServic
     }
 
     @Override
+    public Mono<OperationPermanenteDto> recupererOperationPermanenteParUtilisateur(String utilisateurId, String operationPermanenteId) {
+        return utilisateurService.recupererUtilisateur(utilisateurId)
+                .then(operationPermanenteRepository.findByUtilisateur_IdAndId(utilisateurId, operationPermanenteId))
+                .map(operationPermanente -> operationPermanenteMapper.mapVersOperationPermanenteDto(operationPermanente));
+    }
+
+    @Override
     public Mono<OperationPermanenteDto> ajouterOperationPermanenteAUtilisateur(String utilisateurId, OperationPermanenteDto operationPermanenteDto) {
         return recupererUtilisateurParId(utilisateurId)
                 .map(utilisateur -> operationPermanenteMapper

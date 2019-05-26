@@ -36,29 +36,6 @@ public class OperationControleurTest {
     private OperationService operationService;
 
     @Test
-    public void listerOperationUtilisateur() {
-        UtilisateurDto utilisateurDto = creerUtilisateurDto();
-        OperationDto operationDto1 = creerOperationDto(utilisateurDto);
-        OperationDto operationDto2 = creerOperationDto(utilisateurDto);
-        given(operationService.listerOperationsParUtilisateur("1")).willReturn(Flux.just(operationDto1, operationDto2));
-
-        webTestClient.get().uri("/operations/1")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(OperationDto.class)
-                .hasSize(2);
-    }
-
-    @Test
-    public void listerOperationUtilisateur_UtilisateurNonExistant() {
-        given(operationService.listerOperationsParUtilisateur("1")).willReturn(Flux.error(new UtilisateurNonTrouveException("")));
-
-        webTestClient.get().uri("/operations/1")
-                .exchange()
-                .expectStatus().isNotFound();
-    }
-
-    @Test
     public void ajouterOperationAUtilisateur() {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationDto operationDto = creerOperationDto(utilisateurDto);

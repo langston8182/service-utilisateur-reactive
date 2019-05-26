@@ -18,8 +18,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OperationServiceImplTest {
@@ -38,6 +40,37 @@ public class OperationServiceImplTest {
 
     @Mock
     private UtilisateurMapper utilisateurMapper;
+
+    @Test
+    public void recupererOperationParUtilisateur() {
+        UtilisateurDto utilisateurDto = new UtilisateurDto();
+        Operation operation = new Operation();
+        OperationDto operationDto = new OperationDto();
+        given(utilisateurService.recupererUtilisateur("1")).willReturn(Mono.just(utilisateurDto));
+        given(operationRepository.findByUtilisateur_IdAndId("1", "2")).willReturn(Mono.just(operation));
+        given(operationMapper.mapVersOperationDto(operation)).willReturn(operationDto);
+
+        Mono<OperationDto> resultat = operationService.recupererOperationParUtilisateur("1", "2");
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectNext(operationDto)
+                .verifyComplete();
+        then(operationRepository).should().findByUtilisateur_IdAndId("1", "2");
+    }
+
+    @Test
+    public void recupererOperationParUtilisateur_UtilisateurNonExistant() {
+        given(utilisateurService.recupererUtilisateur("1")).willReturn(Mono.error(new UtilisateurNonTrouveException("")));
+        given(operationRepository.findByUtilisateur_IdAndId("1", "2")).willReturn(Mono.empty());
+
+        Mono<OperationDto> resultat = operationService.recupererOperationParUtilisateur("1", "2");
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectError(UtilisateurNonTrouveException.class)
+                .verify();
+    }
 
     @Test
     public void listerOperationsParUtilisateur() {
@@ -153,21 +186,6 @@ public class OperationServiceImplTest {
                 .expectError(OperationNonTrouveException.class)
                 .verify();
     }
-
-    /*@Test
-    public void modifierOperationUtilisateur_OperationNonTrouvee() {
-        String id = "1";
-        OperationDto operationDto = new OperationDto().setId(id);
-        given(operationRepository.findById(id)).willThrow(OperationNonTrouveException.class);
-
-        Throwable thrown = catchThrowable(() -> operationService.modifierOperationUtilisateur(operationDto));
-
-        assertThat(thrown).isNotNull();
-        assertThat(thrown).isExactlyInstanceOf(OperationNonTrouveException.class);
-        verifyZeroInteractions(operationMapper);
-        then(operationRepository).should().findById(id);
-        verifyNoMoreInteractions(operationRepository);
-    }*/
 
     @Test
     public void supprimerOperation() {
