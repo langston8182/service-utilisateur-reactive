@@ -1,11 +1,11 @@
 package com.cmarchive.bank.serviceutilisateur.service;
 
+import com.cmarchive.bank.ressource.model.OperationPermanenteDto;
 import com.cmarchive.bank.serviceutilisateur.exception.OperationNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.OperationPermanenteMapper;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
 import com.cmarchive.bank.serviceutilisateur.repository.OperationPermanenteRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -66,7 +66,7 @@ public class OperationPermanenteServiceImpl implements OperationPermanenteServic
     }
 
     private Mono<OperationPermanente> recupererOperationPermanenteDansBdd(OperationPermanenteDto operationPermanenteDto) {
-        return operationPermanenteRepository.findById(operationPermanenteDto.getId())
+        return operationPermanenteRepository.findById(operationPermanenteDto.getIdentifiant())
                 .switchIfEmpty(Mono.error(new OperationNonTrouveException("Operation permanente non trouvee")));
     }
 }

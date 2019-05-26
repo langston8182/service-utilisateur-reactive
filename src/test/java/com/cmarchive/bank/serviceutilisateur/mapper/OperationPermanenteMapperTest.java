@@ -1,9 +1,9 @@
 package com.cmarchive.bank.serviceutilisateur.mapper;
 
+import com.cmarchive.bank.ressource.model.OperationPermanenteDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +51,10 @@ public class OperationPermanenteMapperTest {
 
         OperationPermanenteDto resultat = operationPermanenteMapper.mapVersOperationPermanenteDto(operationPermanente);
 
-        assertThat(resultat.getUtilisateurDto()).isEqualToComparingFieldByField(operationPermanente.getUtilisateur());
-        assertThat(resultat).isEqualToIgnoringGivenFields(operationPermanente,"utilisateurDto");
+        assertThat(resultat.getUtilisateurDto()).isEqualToComparingOnlyGivenFields(operationPermanente.getUtilisateur(),
+                "nom", "prenom", "email");
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(operationPermanente,
+                "intitule", "jour", "prix");
     }
 
     private OperationPermanente creerOperationPermanente(Utilisateur cyril) {
@@ -72,16 +74,16 @@ public class OperationPermanenteMapperTest {
 
     private OperationPermanenteDto creerOperationPermanenteDto(UtilisateurDto cyril) {
         return new OperationPermanenteDto()
-                .setJour(12)
-                .setIntitule("operation")
-                .setPrix(BigDecimal.TEN)
-                .setUtilisateurDto(cyril);
+                .jour(12)
+                .intitule("operation")
+                .prix(BigDecimal.TEN)
+                .utilisateurDto(cyril);
     }
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
-                .setEmail("cyril.marchive@gmail.com")
-                .setNom("Marchive")
-                .setPrenom("Cyril");
+                .email("cyril.marchive@gmail.com")
+                .nom("Marchive")
+                .prenom("Cyril");
     }
 }

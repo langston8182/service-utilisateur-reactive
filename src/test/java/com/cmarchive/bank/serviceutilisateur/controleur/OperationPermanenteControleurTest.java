@@ -1,9 +1,9 @@
 package com.cmarchive.bank.serviceutilisateur.controleur;
 
+import com.cmarchive.bank.ressource.model.OperationPermanenteDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.OperationPermanenteNonTrouveeException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.service.OperationPermanenteService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,8 +65,8 @@ public class OperationPermanenteControleurTest {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationPermanenteDto operationPermanenteDto = creerOperationPermanenteDto(utilisateurDto);
         OperationPermanenteDto reponse = new OperationPermanenteDto()
-                .setIntitule("test")
-                .setUtilisateurDto(utilisateurDto);
+                .intitule("test")
+                .utilisateurDto(utilisateurDto);
         given(operationPermanenteService.ajouterOperationPermanenteAUtilisateur(
                 anyString(), any(OperationPermanenteDto.class)))
                 .willReturn(Mono.just(reponse));
@@ -103,8 +103,8 @@ public class OperationPermanenteControleurTest {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationPermanenteDto operationPermanenteDto = creerOperationPermanenteDto(utilisateurDto);
         OperationPermanenteDto reponse = new OperationPermanenteDto()
-                .setIntitule("test")
-                .setUtilisateurDto(utilisateurDto);
+                .intitule("test")
+                .utilisateurDto(utilisateurDto);
         given(operationPermanenteService.modifierOperationPermanenteUtilisateur(any(OperationPermanenteDto.class)))
                 .willReturn(Mono.just(reponse));
 
@@ -147,16 +147,16 @@ public class OperationPermanenteControleurTest {
 
     private OperationPermanenteDto creerOperationPermanenteDto(UtilisateurDto cyril) {
         return new OperationPermanenteDto()
-                .setJour(12)
-                .setIntitule("operation")
-                .setPrix(BigDecimal.TEN)
-                .setUtilisateurDto(cyril);
+                .jour(12)
+                .intitule("operation")
+                .prix(BigDecimal.TEN)
+                .utilisateurDto(cyril);
     }
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
-                .setEmail("cyril.marchive@gmail.com")
-                .setNom("Marchive")
-                .setPrenom("Cyril");
+                .email("cyril.marchive@gmail.com")
+                .nom("Marchive")
+                .prenom("Cyril");
     }
 }

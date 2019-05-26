@@ -1,7 +1,7 @@
 package com.cmarchive.bank.serviceutilisateur.mapper;
 
+import com.cmarchive.bank.ressource.model.OperationPermanenteDto;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface OperationPermanenteMapper {
 
     @Mapping(target = "utilisateur", source = "utilisateurDto")
+    @Mapping(target = "id", source = "identifiant")
     OperationPermanente mapVersOperationPermanente(OperationPermanenteDto operationPermanenteDto);
 
     @InheritInverseConfiguration

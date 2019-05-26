@@ -1,13 +1,13 @@
 package com.cmarchive.bank.serviceutilisateur.service;
 
+import com.cmarchive.bank.ressource.model.OperationDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.OperationNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.OperationMapper;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.Operation;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationDto;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.repository.OperationRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,7 +116,7 @@ public class OperationServiceImplTest {
     @Test
     public void modifierOperationUtilisateur() {
         String id = "1";
-        OperationDto operationDto = new OperationDto().setId(id);
+        OperationDto operationDto = new OperationDto().identifiant(id);
         String email = "email";
         Operation operationBdd = new Operation()
                 .setUtilisateur(new Utilisateur().setEmail(email));
@@ -124,7 +124,7 @@ public class OperationServiceImplTest {
         Operation operationReponse = new Operation()
                 .setUtilisateur(new Utilisateur().setEmail(email));
         OperationDto operationDtoReponse = new OperationDto()
-                .setUtilisateurDto(new UtilisateurDto().setEmail(email));
+                .utilisateurDto(new UtilisateurDto().email(email));
         given(operationRepository.findById(id)).willReturn(Mono.just(operationBdd));
         given(operationMapper.mapVersOperation(operationDto)).willReturn(operation);
         given(operationRepository.save(operation)).willReturn(Mono.just(operationReponse));
@@ -143,7 +143,7 @@ public class OperationServiceImplTest {
     @Test
     public void modifierOperationUtilisateur_OperationNonTrouvee() {
         String id = "1";
-        OperationDto operationDto = new OperationDto().setId(id);
+        OperationDto operationDto = new OperationDto().identifiant(id);
         given(operationRepository.findById(id)).willReturn(Mono.error(new OperationNonTrouveException("")));
 
         Mono<OperationDto> resultat = operationService.modifierOperationUtilisateur(operationDto);

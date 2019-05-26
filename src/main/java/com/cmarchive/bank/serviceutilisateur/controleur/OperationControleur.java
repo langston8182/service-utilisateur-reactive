@@ -1,6 +1,6 @@
 package com.cmarchive.bank.serviceutilisateur.controleur;
 
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationDto;
+import com.cmarchive.bank.ressource.model.OperationDto;
 import com.cmarchive.bank.serviceutilisateur.service.OperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,8 +1,8 @@
 package com.cmarchive.bank.serviceutilisateur.controleur;
 
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurDejaPresentException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.service.UtilisateurService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,13 +35,13 @@ public class UtilisateurControleurTest {
     @Test
     public void listerUtilisateurs() {
         UtilisateurDto cyril = new UtilisateurDto()
-                .setEmail("cyril.marchive@gmail.com")
-                .setNom("Marchive")
-                .setPrenom("Cyril");
+                .email("cyril.marchive@gmail.com")
+                .nom("Marchive")
+                .prenom("Cyril");
         UtilisateurDto melanie = new UtilisateurDto()
-                .setEmail("melanie.boussat@gmail.com")
-                .setNom("Boussat")
-                .setPrenom("Melanie");
+                .email("melanie.boussat@gmail.com")
+                .nom("Boussat")
+                .prenom("Melanie");
         given(utilisateurService.listerUtilisateurs()).willReturn(Flux.just(cyril, melanie));
 
         webTestClient.get().uri("/utilisateurs")
@@ -124,7 +124,7 @@ public class UtilisateurControleurTest {
     public void sauvegarderUtilisateur() {
         UtilisateurDto cyril = creerUtilisateurDto();
         UtilisateurDto reponse = new UtilisateurDto()
-                .setId("1");
+                .identifiant("1");
         given(utilisateurService.creerUtilisateur(any(UtilisateurDto.class))).willReturn(Mono.just(reponse));
 
         webTestClient
@@ -135,7 +135,7 @@ public class UtilisateurControleurTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.id").isNotEmpty();
+                .jsonPath("$.identifiant").isNotEmpty();
     }
 
     @Test
@@ -157,7 +157,7 @@ public class UtilisateurControleurTest {
     public void modifierUtilisateur() {
         UtilisateurDto cyril = creerUtilisateurDto();
         UtilisateurDto reponse = creerUtilisateurDto()
-                .setNom("Boussat");
+                .nom("Boussat");
         given(utilisateurService.modifierUtilisateur(any(UtilisateurDto.class))).willReturn(Mono.just(reponse));
 
         webTestClient
@@ -187,8 +187,8 @@ public class UtilisateurControleurTest {
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
-                .setEmail("cyril.marchive@gmail.com")
-                .setNom("Marchive")
-                .setPrenom("Cyril");
+                .email("cyril.marchive@gmail.com")
+                .nom("Marchive")
+                .prenom("Cyril");
     }
 }

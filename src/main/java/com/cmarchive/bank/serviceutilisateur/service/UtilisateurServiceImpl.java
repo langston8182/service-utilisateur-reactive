@@ -1,10 +1,10 @@
 package com.cmarchive.bank.serviceutilisateur.service;
 
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurDejaPresentException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.repository.UtilisateurRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -53,7 +53,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Mono<UtilisateurDto> modifierUtilisateur(UtilisateurDto utilisateurDto) {
-        return recupererUtilisateur(utilisateurDto.getId())
+        return recupererUtilisateur(utilisateurDto.getIdentifiant())
                 .map(uDto -> utilisateurMapper.mapVersUtilisateur(uDto))
                 .flatMap(utilisateur -> utilisateurRepository.save(utilisateur))
                 .map(utilisateur -> utilisateurMapper.mapVersUtilisateurDto(utilisateur));

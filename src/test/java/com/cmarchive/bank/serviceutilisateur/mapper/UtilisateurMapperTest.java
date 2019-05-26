@@ -1,7 +1,7 @@
 package com.cmarchive.bank.serviceutilisateur.mapper;
 
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class UtilisateurMapperTest {
     @Test
     public void mapVersUtilisateur() {
         UtilisateurDto utilisateurDto = new UtilisateurDto()
-                .setNom("Marchive")
-                .setEmail("cyril.marchive@gmail.com")
-                .setPrenom("Cyril");
+                .nom("Marchive")
+                .email("cyril.marchive@gmail.com")
+                .prenom("Cyril");
 
         Utilisateur resultat = utilisateurMapper.mapVersUtilisateur(utilisateurDto);
 
@@ -48,6 +48,6 @@ public class UtilisateurMapperTest {
 
         UtilisateurDto resultat = utilisateurMapper.mapVersUtilisateurDto(utilisateur);
 
-        assertThat(resultat).isEqualToComparingFieldByField(utilisateur);
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(utilisateur, "nom", "prenom", "email");
     }
 }

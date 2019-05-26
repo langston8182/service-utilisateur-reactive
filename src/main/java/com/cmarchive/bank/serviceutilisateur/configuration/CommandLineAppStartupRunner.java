@@ -1,6 +1,6 @@
 package com.cmarchive.bank.serviceutilisateur.configuration;
 
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.service.UtilisateurService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,10 +16,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         UtilisateurDto utilisateurDto = new UtilisateurDto()
-                .setId("1")
-                .setNom("Marchive")
-                .setPrenom("Cyril")
-                .setEmail("cyril.marchive@gmail.com");
+                .identifiant("1")
+                .nom("Marchive")
+                .prenom("Cyril")
+                .email("cyril.marchive@gmail.com");
 
         utilisateurService.creerUtilisateur(utilisateurDto).subscribe();
     }

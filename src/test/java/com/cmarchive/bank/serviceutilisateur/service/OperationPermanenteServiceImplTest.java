@@ -1,13 +1,13 @@
 package com.cmarchive.bank.serviceutilisateur.service;
 
+import com.cmarchive.bank.ressource.model.OperationPermanenteDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.OperationPermanenteNonTrouveeException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.OperationPermanenteMapper;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.OperationPermanente;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationPermanenteDto;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.repository.OperationPermanenteRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,7 +119,7 @@ public class OperationPermanenteServiceImplTest {
     @Test
     public void modifierOperationPermanenteUtilisateur() {
         String id = "1";
-        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setId(id);
+        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().identifiant(id);
         String email = "email";
         OperationPermanente operationPermanenteBdd = new OperationPermanente()
                 .setUtilisateur(new Utilisateur().setEmail(email));
@@ -127,7 +127,7 @@ public class OperationPermanenteServiceImplTest {
         OperationPermanente operationPermanenteReponse = new OperationPermanente()
                 .setUtilisateur(new Utilisateur().setEmail(email));
         OperationPermanenteDto operationPermanenteDtoReponse = new OperationPermanenteDto()
-                .setUtilisateurDto(new UtilisateurDto().setEmail(email));
+                .utilisateurDto(new UtilisateurDto().email(email));
         given(operationPermanenteRepository.findById(id)).willReturn(Mono.just(operationPermanenteBdd));
         given(operationPermanenteMapper.mapVersOperationPermanente(operationPermanenteDto))
                 .willReturn(operationPermanente);
@@ -149,7 +149,7 @@ public class OperationPermanenteServiceImplTest {
     @Test
     public void modifierOperationPermanenteUtilisateur_OperationPermanenteNonTrouvee() {
         String id = "1";
-        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setId(id);
+        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().identifiant(id);
         given(operationPermanenteRepository.findById(id)).willReturn(Mono.error(new OperationPermanenteNonTrouveeException("")));
 
         Mono<OperationPermanenteDto> resultat = operationPermanenteService.modifierOperationPermanenteUtilisateur(

@@ -1,10 +1,10 @@
 package com.cmarchive.bank.serviceutilisateur.service;
 
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurDejaPresentException;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
 import com.cmarchive.bank.serviceutilisateur.mapper.UtilisateurMapper;
 import com.cmarchive.bank.serviceutilisateur.modele.Utilisateur;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.repository.UtilisateurRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -149,11 +149,11 @@ public class UtilisateurServiceImplTest {
         Utilisateur cyrilRecuperedeBdd = new Utilisateur()
                 .setId(id);
         UtilisateurDto cyrilDtoRecupereDeBdd = new UtilisateurDto()
-                .setId(id);
+                .identifiant(id);
         Utilisateur cyril = spy(Utilisateur.class);
         cyril.setId(id);
         UtilisateurDto cyrilDto = new UtilisateurDto()
-                .setId(id);
+                .identifiant(id);
         given(utilisateurRepository.findById(id)).willReturn(Mono.just(cyrilRecuperedeBdd));
         given(utilisateurMapper.mapVersUtilisateurDto(cyrilRecuperedeBdd)).willReturn(cyrilDtoRecupereDeBdd);
         given(utilisateurMapper.mapVersUtilisateur(cyrilDtoRecupereDeBdd)).willReturn(cyril);
@@ -173,7 +173,7 @@ public class UtilisateurServiceImplTest {
     @Test
     public void modifierUtilisateur_UtilisateurInexistant() {
         UtilisateurDto cyrilDto = new UtilisateurDto();
-        cyrilDto.setId("Id inexistant");
+        cyrilDto.setIdentifiant("Id inexistant");
         given(utilisateurRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<UtilisateurDto> resultat = utilisateurService.modifierUtilisateur(cyrilDto);

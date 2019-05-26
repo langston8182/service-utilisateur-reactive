@@ -1,8 +1,8 @@
 package com.cmarchive.bank.serviceutilisateur.controleur;
 
+import com.cmarchive.bank.ressource.model.OperationDto;
+import com.cmarchive.bank.ressource.model.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.exception.UtilisateurNonTrouveException;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.OperationDto;
-import com.cmarchive.bank.serviceutilisateur.modele.dto.UtilisateurDto;
 import com.cmarchive.bank.serviceutilisateur.service.OperationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,8 +63,8 @@ public class OperationControleurTest {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationDto operationDto = creerOperationDto(utilisateurDto);
         OperationDto reponse = new OperationDto()
-                .setIntitule("test")
-                .setUtilisateurDto(utilisateurDto);
+                .intitule("test")
+                .utilisateurDto(utilisateurDto);
         given(operationService.ajouterOperationAUtilisateur(anyString(), any(OperationDto.class)))
                 .willReturn(Mono.just(reponse));
 
@@ -99,8 +99,8 @@ public class OperationControleurTest {
         UtilisateurDto utilisateurDto = creerUtilisateurDto();
         OperationDto operationDto = creerOperationDto(utilisateurDto);
         OperationDto reponse = new OperationDto()
-                .setIntitule("test")
-                .setUtilisateurDto(utilisateurDto);
+                .intitule("test")
+                .utilisateurDto(utilisateurDto);
         given(operationService.modifierOperationUtilisateur(any(OperationDto.class)))
                 .willReturn(Mono.just(reponse));
 
@@ -143,16 +143,16 @@ public class OperationControleurTest {
 
     private OperationDto creerOperationDto(UtilisateurDto cyril) {
         return new OperationDto()
-                .setDateOperation(LocalDate.now())
-                .setIntitule("operation")
-                .setPrix(BigDecimal.TEN)
-                .setUtilisateurDto(cyril);
+                .dateOperation(LocalDate.now())
+                .intitule("operation")
+                .prix(BigDecimal.TEN)
+                .utilisateurDto(cyril);
     }
 
     private UtilisateurDto creerUtilisateurDto() {
         return new UtilisateurDto()
-                .setEmail("cyril.marchive@gmail.com")
-                .setNom("Marchive")
-                .setPrenom("Cyril");
+                .email("cyril.marchive@gmail.com")
+                .nom("Marchive")
+                .prenom("Cyril");
     }
 }
