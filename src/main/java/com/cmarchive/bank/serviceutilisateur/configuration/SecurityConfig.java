@@ -9,6 +9,12 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public SecurityWebFilterChain corsGlobalSpringSecurityFilterChain(ServerHttpSecurity http) {
+        http.csrf().disable();
+        return http.build();
+    }
+
+    @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange()
                 .anyExchange().authenticated()
