@@ -116,7 +116,7 @@ public class OperationServiceImplTest {
     @Test
     public void modifierOperationUtilisateur() {
         String id = "1";
-        OperationDto operationDto = new OperationDto().setId(id);
+        OperationDto operationDto = new OperationDto().setIdentifiant(id);
         String email = "email";
         Operation operationBdd = new Operation()
                 .setUtilisateur(new Utilisateur().setEmail(email));
@@ -143,7 +143,7 @@ public class OperationServiceImplTest {
     @Test
     public void modifierOperationUtilisateur_OperationNonTrouvee() {
         String id = "1";
-        OperationDto operationDto = new OperationDto().setId(id);
+        OperationDto operationDto = new OperationDto().setIdentifiant(id);
         given(operationRepository.findById(id)).willReturn(Mono.error(new OperationNonTrouveException("")));
 
         Mono<OperationDto> resultat = operationService.modifierOperationUtilisateur(operationDto);

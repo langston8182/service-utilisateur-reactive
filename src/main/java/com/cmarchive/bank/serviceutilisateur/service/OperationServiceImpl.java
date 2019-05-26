@@ -54,7 +54,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     private Mono<Operation> recupererOperationDansBdd(OperationDto operationDto) {
-        return operationRepository.findById(operationDto.getId())
+        return operationRepository.findById(operationDto.getIdentifiant())
                 .switchIfEmpty(Mono.error(new OperationNonTrouveException("Operation non trouvee")));
     }
 

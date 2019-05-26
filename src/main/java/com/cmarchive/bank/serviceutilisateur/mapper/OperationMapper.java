@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface OperationMapper {
 
     @Mapping(target = "utilisateur", source = "utilisateurDto")
+    @Mapping(target = "id", source = "identifiant")
     Operation mapVersOperation(OperationDto operationDto);
 
     @InheritInverseConfiguration

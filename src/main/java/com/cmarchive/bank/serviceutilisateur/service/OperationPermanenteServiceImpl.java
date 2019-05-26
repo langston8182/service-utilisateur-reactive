@@ -66,7 +66,7 @@ public class OperationPermanenteServiceImpl implements OperationPermanenteServic
     }
 
     private Mono<OperationPermanente> recupererOperationPermanenteDansBdd(OperationPermanenteDto operationPermanenteDto) {
-        return operationPermanenteRepository.findById(operationPermanenteDto.getId())
+        return operationPermanenteRepository.findById(operationPermanenteDto.getIdentifiant())
                 .switchIfEmpty(Mono.error(new OperationNonTrouveException("Operation permanente non trouvee")));
     }
 }

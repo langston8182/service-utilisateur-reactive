@@ -124,7 +124,7 @@ public class UtilisateurControleurTest {
     public void sauvegarderUtilisateur() {
         UtilisateurDto cyril = creerUtilisateurDto();
         UtilisateurDto reponse = new UtilisateurDto()
-                .setId("1");
+                .setIdentifiant("1");
         given(utilisateurService.creerUtilisateur(any(UtilisateurDto.class))).willReturn(Mono.just(reponse));
 
         webTestClient
@@ -135,7 +135,7 @@ public class UtilisateurControleurTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.id").isNotEmpty();
+                .jsonPath("$.identifiant").isNotEmpty();
     }
 
     @Test

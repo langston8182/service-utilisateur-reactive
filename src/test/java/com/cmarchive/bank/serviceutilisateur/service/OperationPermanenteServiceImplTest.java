@@ -119,7 +119,7 @@ public class OperationPermanenteServiceImplTest {
     @Test
     public void modifierOperationPermanenteUtilisateur() {
         String id = "1";
-        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setId(id);
+        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setIdentifiant(id);
         String email = "email";
         OperationPermanente operationPermanenteBdd = new OperationPermanente()
                 .setUtilisateur(new Utilisateur().setEmail(email));
@@ -149,7 +149,7 @@ public class OperationPermanenteServiceImplTest {
     @Test
     public void modifierOperationPermanenteUtilisateur_OperationPermanenteNonTrouvee() {
         String id = "1";
-        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setId(id);
+        OperationPermanenteDto operationPermanenteDto = new OperationPermanenteDto().setIdentifiant(id);
         given(operationPermanenteRepository.findById(id)).willReturn(Mono.error(new OperationPermanenteNonTrouveeException("")));
 
         Mono<OperationPermanenteDto> resultat = operationPermanenteService.modifierOperationPermanenteUtilisateur(

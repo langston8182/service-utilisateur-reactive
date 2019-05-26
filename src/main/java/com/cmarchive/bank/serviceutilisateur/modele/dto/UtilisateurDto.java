@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class UtilisateurDto {
 
-    private String id;
+    private String identifiant;
     private String nom;
     private String prenom;
     private String email;

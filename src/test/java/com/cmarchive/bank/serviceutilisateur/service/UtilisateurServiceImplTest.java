@@ -149,11 +149,11 @@ public class UtilisateurServiceImplTest {
         Utilisateur cyrilRecuperedeBdd = new Utilisateur()
                 .setId(id);
         UtilisateurDto cyrilDtoRecupereDeBdd = new UtilisateurDto()
-                .setId(id);
+                .setIdentifiant(id);
         Utilisateur cyril = spy(Utilisateur.class);
         cyril.setId(id);
         UtilisateurDto cyrilDto = new UtilisateurDto()
-                .setId(id);
+                .setIdentifiant(id);
         given(utilisateurRepository.findById(id)).willReturn(Mono.just(cyrilRecuperedeBdd));
         given(utilisateurMapper.mapVersUtilisateurDto(cyrilRecuperedeBdd)).willReturn(cyrilDtoRecupereDeBdd);
         given(utilisateurMapper.mapVersUtilisateur(cyrilDtoRecupereDeBdd)).willReturn(cyril);
@@ -173,7 +173,7 @@ public class UtilisateurServiceImplTest {
     @Test
     public void modifierUtilisateur_UtilisateurInexistant() {
         UtilisateurDto cyrilDto = new UtilisateurDto();
-        cyrilDto.setId("Id inexistant");
+        cyrilDto.setIdentifiant("Id inexistant");
         given(utilisateurRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<UtilisateurDto> resultat = utilisateurService.modifierUtilisateur(cyrilDto);

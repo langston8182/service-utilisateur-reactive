@@ -53,7 +53,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Mono<UtilisateurDto> modifierUtilisateur(UtilisateurDto utilisateurDto) {
-        return recupererUtilisateur(utilisateurDto.getId())
+        return recupererUtilisateur(utilisateurDto.getIdentifiant())
                 .map(uDto -> utilisateurMapper.mapVersUtilisateur(uDto))
                 .flatMap(utilisateur -> utilisateurRepository.save(utilisateur))
                 .map(utilisateur -> utilisateurMapper.mapVersUtilisateurDto(utilisateur));

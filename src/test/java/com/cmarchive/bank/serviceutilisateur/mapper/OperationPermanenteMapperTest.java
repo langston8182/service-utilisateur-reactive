@@ -40,8 +40,10 @@ public class OperationPermanenteMapperTest {
 
         OperationPermanente resultat = operationPermanenteMapper.mapVersOperationPermanente(operationPermanenteDto);
 
-        assertThat(resultat.getUtilisateur()).isEqualToComparingFieldByField(operationPermanenteDto.getUtilisateurDto());
-        assertThat(resultat).isEqualToIgnoringGivenFields(operationPermanenteDto, "utilisateur");
+        assertThat(resultat.getUtilisateur()).isEqualToComparingOnlyGivenFields(operationPermanenteDto.getUtilisateurDto(),
+                "nom", "prenom", "email");
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(operationPermanenteDto,
+                "intitule", "jour", "prix");
     }
 
     @Test
@@ -51,8 +53,10 @@ public class OperationPermanenteMapperTest {
 
         OperationPermanenteDto resultat = operationPermanenteMapper.mapVersOperationPermanenteDto(operationPermanente);
 
-        assertThat(resultat.getUtilisateurDto()).isEqualToComparingFieldByField(operationPermanente.getUtilisateur());
-        assertThat(resultat).isEqualToIgnoringGivenFields(operationPermanente,"utilisateurDto");
+        assertThat(resultat.getUtilisateurDto()).isEqualToComparingOnlyGivenFields(operationPermanente.getUtilisateur(),
+                "nom", "prenom", "email");
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(operationPermanente,
+                "intitule", "jour", "prix");
     }
 
     private OperationPermanente creerOperationPermanente(Utilisateur cyril) {

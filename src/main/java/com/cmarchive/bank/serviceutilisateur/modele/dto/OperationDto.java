@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class OperationDto {
 
-    private String id;
+    private String identifiant;
     private String intitule;
     private LocalDate dateOperation;
     private BigDecimal prix;

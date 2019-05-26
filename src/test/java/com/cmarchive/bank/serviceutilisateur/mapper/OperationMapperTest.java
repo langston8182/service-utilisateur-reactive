@@ -29,7 +29,7 @@ public class OperationMapperTest {
     @ComponentScan(basePackageClasses = {OperationMapper.class, UtilisateurMapper.class},
             useDefaultFilters = false, includeFilters = {
             @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
-                    classes = {OperationMapper.class, UtilisateurMapper.class}) })
+                    classes = {OperationMapper.class, UtilisateurMapper.class})})
     public static class TestConfiguration {
         //
     }
@@ -41,8 +41,10 @@ public class OperationMapperTest {
 
         Operation resultat = operationMapper.mapVersOperation(operationDto);
 
-        assertThat(resultat.getUtilisateur()).isEqualToComparingFieldByField(operationDto.getUtilisateurDto());
-        assertThat(resultat).isEqualToIgnoringGivenFields(operationDto, "utilisateur");
+        assertThat(resultat.getUtilisateur()).isEqualToComparingOnlyGivenFields(operationDto.getUtilisateurDto(),
+                "nom", "prenom", "email");
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(operationDto,
+                "intitule", "dateOperation", "prix");
     }
 
     @Test
@@ -52,8 +54,10 @@ public class OperationMapperTest {
 
         OperationDto resultat = operationMapper.mapVersOperationDto(operation);
 
-        assertThat(resultat.getUtilisateurDto()).isEqualToComparingFieldByField(operation.getUtilisateur());
-        assertThat(resultat).isEqualToIgnoringGivenFields(operation, "utilisateurDto");
+        assertThat(resultat.getUtilisateurDto()).isEqualToComparingOnlyGivenFields(operation.getUtilisateur(),
+                "nom", "prenom", "email");
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(operation,
+                "intitule", "dateOperation", "prix");
     }
 
     private Operation creerOperation(Utilisateur cyril) {

@@ -36,7 +36,7 @@ public class UtilisateurMapperTest {
 
         Utilisateur resultat = utilisateurMapper.mapVersUtilisateur(utilisateurDto);
 
-        assertThat(resultat).isEqualToComparingFieldByField(utilisateurDto);
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(utilisateurDto, "nom", "prenom", "email");
     }
 
     @Test
@@ -48,6 +48,6 @@ public class UtilisateurMapperTest {
 
         UtilisateurDto resultat = utilisateurMapper.mapVersUtilisateurDto(utilisateur);
 
-        assertThat(resultat).isEqualToComparingFieldByField(utilisateur);
+        assertThat(resultat).isEqualToComparingOnlyGivenFields(utilisateur, "nom", "prenom", "email");
     }
 }

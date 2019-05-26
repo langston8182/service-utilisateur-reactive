@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class OperationPermanenteDto {
 
-    private String id;
+    private String identifiant;
     private String intitule;
     private Integer jour;
     private BigDecimal prix;
