@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 public interface OperationPermanenteService {
 
     Flux<OperationPermanenteDto> listerOperationPermanentesParUtilisateur(String utilisateurId);
+    Mono<OperationPermanenteDto> recupererOperationPermanenteParUtilisateur(String utilisateurId, String operationPermanenteId);
     Mono<OperationPermanenteDto> ajouterOperationPermanenteAUtilisateur(
             String utilisateurId, OperationPermanenteDto operationPermanenteDto);
     Mono<OperationPermanenteDto> modifierOperationPermanenteUtilisateur(OperationPermanenteDto operationPermanenteDto);

@@ -96,7 +96,7 @@ public class UtilisateurServiceImplTest {
     }
 
     @Test
-    public void recupererUtilisateurParIdOktaInexistant() {
+    public void recupererUtilisateurParEmailInexistant() {
         given(utilisateurRepository.findByEmail(anyString())).willReturn(Mono.empty());
 
         Mono<UtilisateurDto> resultat = utilisateurService.recupererUtilisateurParEmail(anyString());

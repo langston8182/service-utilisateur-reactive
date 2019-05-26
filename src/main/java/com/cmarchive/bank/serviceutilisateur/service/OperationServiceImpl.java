@@ -37,6 +37,13 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    public Mono<OperationDto> recupererOperationParUtilisateur(String utilisateurId, String operationId) {
+        return utilisateurService.recupererUtilisateur(utilisateurId)
+                .then(operationRepository.findByUtilisateur_IdAndId(utilisateurId, operationId))
+                .map(operation -> operationMapper.mapVersOperationDto(operation));
+    }
+
+    @Override
     public Mono<OperationDto> ajouterOperationAUtilisateur(String utilisateurId, OperationDto operationDto) {
         return recupererUtilisateurParId(utilisateurId)
                 .map(utilisateur -> operationMapper.mapVersOperation(operationDto).setUtilisateur(utilisateur))

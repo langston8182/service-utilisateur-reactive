@@ -75,6 +75,21 @@ public class OperationRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    public void recupererOperationParUtilisateur(){
+        Utilisateur cyril = creerUtilisateur();
+        Operation operation = creerOperation(cyril);
+        mongoTemplate.save(cyril);
+        mongoTemplate.insert(operation);
+        Mono<Operation> resultat = operationRepository.findByUtilisateur_IdAndId(cyril.getId(), operation.getId());
+
+        StepVerifier.create(resultat)
+                .expectSubscription()
+                .expectNextMatches(o -> o.getIntitule().equalsIgnoreCase("operation"))
+                .verifyComplete();
+    }
+
     private Operation creerOperation(Utilisateur cyril) {
         return new Operation()
                 .setDateOperation(LocalDate.now())
