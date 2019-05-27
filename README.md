@@ -1,6 +1,6 @@
 # Version
 
-- **1.0.0-SNAPSHOT** : initialisation du projet
+- **1.0.0** : initialisation du projet
 
 # Objectif
 
